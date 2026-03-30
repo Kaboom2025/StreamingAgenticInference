@@ -66,10 +66,19 @@ def _print_table(results: dict[str, list[EpisodeMetrics]]) -> None:
     print("simple_4x4 should have 0 recovery events if no enemies are present")
 
 
-def main(n_episodes: int = 5, model_id: str | None = None) -> None:
+def main(
+    n_episodes: int = 5,
+    model_id: str | None = None,
+    scenario_names: list[str] | None = None,
+    results_dir: str | None = None,
+) -> None:
     system_prompt = SYSTEM_PROMPT_PATH.read_text()
     config = _build_config(model_id=model_id)
-    scenarios = load_scenarios()
+    all_scenarios = load_scenarios()
+    if scenario_names:
+        scenarios = [s for s in all_scenarios if s.name in scenario_names]
+    else:
+        scenarios = all_scenarios
     results: dict[str, list[EpisodeMetrics]] = {}
 
     for scenario in scenarios:
@@ -113,5 +122,23 @@ if __name__ == "__main__":
         default=None,
         help="Path to GGUF model file (default: qwen2.5-1.5b repo-root path)",
     )
+    parser.add_argument(
+        "--scenarios",
+        nargs="+",
+        default=None,
+        metavar="SCENARIO",
+        help="Scenario names to run (default: all). E.g. simple_4x4 single_patrol",
+    )
+    parser.add_argument(
+        "--results-dir",
+        type=str,
+        default=None,
+        help="Directory to write per-episode JSON results (optional)",
+    )
     args = parser.parse_args()
-    main(n_episodes=args.n_episodes, model_id=args.model_id)
+    main(
+        n_episodes=args.n_episodes,
+        model_id=args.model_id,
+        scenario_names=args.scenarios,
+        results_dir=args.results_dir,
+    )
