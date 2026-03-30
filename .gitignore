@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+*.egg
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Models (large binary files)
+*.gguf
+*.bin
+*.safetensors
+
+# Test coverage
+htmlcov/
+.coverage
+.pytest_cache/
+
+# Results
+results/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
