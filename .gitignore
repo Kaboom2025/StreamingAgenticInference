@@ -10,7 +10,7 @@ build/
 # Virtual envs
 .venv/
 venv/
-env/
+/env/
 
 # Models (large binary files)
 *.gguf
